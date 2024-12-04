@@ -4,23 +4,26 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    // Lazy-loading modules: This is done so that the home page is loaded only when the user navigates to it.
+    loadChildren: () =>
+      import('./home/home.module').then((m) => m.HomePageModule),
   },
   {
     path: '',
     redirectTo: 'home',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'about',
-    loadChildren: () => import('./about/about.module').then( m => m.AboutPageModule)
+    loadChildren: () =>
+      import('./about/about.module').then((m) => m.AboutPageModule),
   },
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
