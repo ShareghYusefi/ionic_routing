@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  apiEndpoint: 'http://prod-api.example.com',
+  appName: 'Ionic Prod App',
 };
