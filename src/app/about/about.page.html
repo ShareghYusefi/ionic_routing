@@ -1,5 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>about</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -11,4 +14,7 @@
     </ion-toolbar>
   </ion-header>
   <ion-button routerLink="/home">Home</ion-button>
+  <ion-button routerLink="/contact">Contact</ion-button>
+  <!-- Email -->
+  <ion-label>{{ email }}</ion-label>
 </ion-content>

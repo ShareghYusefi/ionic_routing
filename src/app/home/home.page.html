@@ -23,5 +23,8 @@
       >
     </p>
   </div>
-  <ion-button routerLink="/about">About</ion-button>
+  <ion-button (click)="navigateToAbout('yusefi@Robo.ca')">About</ion-button>
+  <ion-button [routerLink]="'/contact/' + 1" routerDirection="forward"
+    >Contact</ion-button
+  >
 </ion-content>
