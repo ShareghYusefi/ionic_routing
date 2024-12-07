@@ -11,6 +11,58 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-button routerLink="/home">Home</ion-button>
-  <ion-button routerLink="/about">About</ion-button>
+  <ion-list>
+    <ion-list>
+      <ion-item>
+        <ion-input
+          label="Email input"
+          type="email"
+          labelPlacement="floating"
+          placeholder="email@domain.com"
+          [(ngModel)]="email"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-radio-group value="Web Design" [(ngModel)]="service">
+          <ion-radio value="Web Design">Web Design</ion-radio><br />
+          <ion-radio value="Mobile Development">Mobile Development</ion-radio
+          ><br />
+          <ion-radio value="Marketing">Marketing</ion-radio><br />
+        </ion-radio-group>
+      </ion-item>
+
+      <ion-item>
+        <ion-select
+          label="Select an item"
+          label-placement="floating"
+          [multiple]="true"
+          okText="confirm choice"
+        >
+          <ion-select-option value="A">A</ion-select-option>
+          <ion-select-option value="B">B</ion-select-option>
+          <ion-select-option value="C">C</ion-select-option>
+          <ion-select-option value="D">D</ion-select-option>
+          <ion-select-option value="E">E</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-textarea
+          label="message"
+          labelPlacement="floating"
+          placeholder="Type something here"
+          [autoGrow]="true"
+          [(ngModel)]="message"
+        ></ion-textarea>
+      </ion-item>
+
+      <ion-item *ngFor="let method of contactMethods">
+        <ion-checkbox [(ngModel)]="method.isChecked"
+          >{{method.val}}</ion-checkbox
+        >
+      </ion-item>
+    </ion-list>
+  </ion-list>
+  <ion-button (click)="submitForm()">Submit</ion-button>
 </ion-content>

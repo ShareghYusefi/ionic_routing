@@ -7,6 +7,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./contact.page.scss'],
 })
 export class ContactPage implements OnInit {
+  email: string = '';
+  service: string = '';
+  message: string = '';
+  method: Object = {};
+
+  contactMethods = [
+    { val: 'email', isChecked: false },
+    { val: 'phone', isChecked: true },
+    { val: 'sms', isChecked: false },
+  ];
+
   constructor(private router: Router) {}
 
   ngOnInit() {}
@@ -17,5 +28,21 @@ export class ContactPage implements OnInit {
         email: 'some@email.co',
       },
     });
+  }
+
+  submitForm() {
+    console.log('Email:', this.email);
+    console.log('Service:', this.service);
+    console.log('Message:', this.message);
+    // iterate over contact methods
+    this.contactMethods.map((method) => {
+      // check if method is checked
+      if (method.isChecked) {
+        // if checked, assign to our method variable for submission
+        this.method = method;
+      }
+    });
+
+    console.log('Method:', this.method);
   }
 }
