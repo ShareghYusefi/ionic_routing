@@ -37,13 +37,25 @@ export class ContactPage implements OnInit {
       header: "Are you sure you'd like to submit?",
       message: 'Please confirm that you are 18 years or older.',
       inputs: [
+        // {
+        //   name: 'age',
+        //   type: 'number',
+        //   placeholder: 'Enter your age',
+        //   label: 'Age',
+        //   min: 18,
+        //   max: 120,
+        // },
         {
-          name: 'age',
-          type: 'number',
-          placeholder: 'Enter your age',
-          label: 'Age',
-          min: 18,
-          max: 120,
+          type: 'radio',
+          label: 'Agree',
+          value: 'agree',
+          checked: true,
+        },
+        {
+          type: 'radio',
+          label: 'Disagree',
+          value: 'disagree',
+          checked: false,
         },
       ],
       buttons: [
@@ -62,6 +74,14 @@ export class ContactPage implements OnInit {
               console.log('You are not old enough to submit this form.');
               // close alert
               alert.dismiss();
+            }
+
+            // checking radio button value
+            if (data === 'disagree') {
+              console.log('You must agree to submit this form.');
+              // close alert
+              alert.dismiss();
+              return;
             }
 
             this.submitForm();
