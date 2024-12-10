@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-contact',
@@ -18,7 +19,7 @@ export class ContactPage implements OnInit {
     { val: 'sms', isChecked: false },
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private alertCtrl: AlertController) {}
 
   ngOnInit() {}
 
@@ -28,6 +29,48 @@ export class ContactPage implements OnInit {
         email: 'some@email.co',
       },
     });
+  }
+
+  async presentSubmissionAlert() {
+    // create alert
+    const alert = await this.alertCtrl.create({
+      header: "Are you sure you'd like to submit?",
+      message: 'Please confirm that you are 18 years or older.',
+      inputs: [
+        {
+          name: 'age',
+          type: 'number',
+          placeholder: 'Enter your age',
+          label: 'Age',
+          min: 18,
+          max: 120,
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Submission cancelled');
+          },
+        },
+        {
+          text: 'Submit',
+          handler: (data) => {
+            console.log('Submission successful', data);
+            if (data.age < 18) {
+              console.log('You are not old enough to submit this form.');
+              // close alert
+              alert.dismiss();
+            }
+
+            this.submitForm();
+          },
+        },
+      ],
+    });
+    // present alert
+    await alert.present();
   }
 
   submitForm() {
