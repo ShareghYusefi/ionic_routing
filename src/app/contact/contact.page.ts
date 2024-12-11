@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-contact',
@@ -19,7 +19,11 @@ export class ContactPage implements OnInit {
     { val: 'sms', isChecked: false },
   ];
 
-  constructor(private router: Router, private alertCtrl: AlertController) {}
+  constructor(
+    private router: Router,
+    private alertCtrl: AlertController,
+    private toastCtrl: ToastController
+  ) {}
 
   ngOnInit() {}
 
@@ -78,7 +82,13 @@ export class ContactPage implements OnInit {
 
             // checking radio button value
             if (data === 'disagree') {
-              console.log('You must agree to submit this form.');
+              // present toast
+              this.presentToast(
+                'top',
+                'Your form submission was unsuccessful!',
+                'danger',
+                'text-white'
+              );
               // close alert
               alert.dismiss();
               return;
@@ -91,6 +101,35 @@ export class ContactPage implements OnInit {
     });
     // present alert
     await alert.present();
+  }
+
+  // position can be of 'top', 'bottom', 'middle' values
+  // message is an optional string
+  async presentToast(
+    position: 'top' | 'bottom' | 'middle',
+    message: string,
+    color?:
+      | 'primary'
+      | 'secondary'
+      | 'tertiary'
+      | 'success'
+      | 'warning'
+      | 'danger'
+      | 'light'
+      | 'medium'
+      | 'dark',
+    cssClass?: string
+  ) {
+    // create toast
+    const toast = await this.toastCtrl.create({
+      message: message,
+      duration: 2000, // milliseconds
+      position: position,
+      color: color,
+      cssClass: cssClass,
+    });
+    // present toast
+    await toast.present();
   }
 
   submitForm() {
