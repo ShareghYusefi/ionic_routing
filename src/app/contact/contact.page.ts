@@ -121,15 +121,28 @@ export class ContactPage implements OnInit {
     cssClass?: string
   ) {
     // create toast
-    const toast = await this.toastCtrl.create({
-      message: message,
-      duration: 2000, // milliseconds
-      position: position,
-      color: color,
-      cssClass: cssClass,
-    });
+    // const toast = await this.toastCtrl.create({
+    //   message: message,
+    //   duration: 2000, // milliseconds
+    //   position: position,
+    //   color: color,
+    //   cssClass: cssClass,
+    // });
+
+    this.toastCtrl
+      .create({
+        message: message,
+        duration: 2000, // milliseconds
+        position: position,
+        color: color,
+        cssClass: cssClass,
+      })
+      .then((toast) => {
+        toast.present();
+      });
+
     // present toast
-    await toast.present();
+    // await toast.present();
   }
 
   submitForm() {
