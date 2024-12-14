@@ -14,18 +14,18 @@
     </ion-fab-button>
   </ion-fab>
   <ion-list>
-    <ion-item [button]="true" *ngFor="let item of items; let index">
+    <ion-item [button]="true" *ngFor="let student of students; let index">
       <ion-avatar slot="start">
         <img
           [src]="'https://picsum.photos/80/80?random=' + index"
           alt="avatar"
         />
       </ion-avatar>
-      <ion-label>{{ item }}</ion-label>
+      <ion-label>{{ student.name }}</ion-label>
+      <!-- delete button -->
+      <ion-button fill="clear" (click)="presentAlertDelete(student.id)" slot="end">
+        <ion-icon color="danger" name="trash"></ion-icon>
+      </ion-button>
     </ion-item>
   </ion-list>
-  <!-- This component shows a loading spinner when loading data -->
-  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
 </ion-content>
