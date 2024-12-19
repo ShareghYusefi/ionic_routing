@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
+import { EmailComposer } from 'capacitor-email-composer';
 
 @Component({
   selector: 'app-contact',
@@ -145,6 +146,33 @@ export class ContactPage implements OnInit {
     // await toast.present();
   }
 
+  // function will run asynchronously
+  async sendEmail() {
+    // check if email client is available
+    const isAvailable = await EmailComposer.hasAccount(); // wait for successfult response (boolean)
+    if (!isAvailable) {
+      // present toast
+      this.presentToast(
+        'top',
+        'Email client not available!',
+        'danger',
+        'text-white'
+      );
+      return;
+    }
+
+    // compose the mail
+    await EmailComposer.open({
+      to: ['sharegh.yusefi@robogarden.ca'],
+      subject: 'Contact Form Submission',
+      body: `Email: ${this.email} \nService: ${this.service} \nMessage: ${this.message}`, // can be HTML
+      // attachments: [{
+      //   type: 'absolute',
+      //   path: 'file://README.pdf' // Android
+      // }]
+    });
+  }
+
   submitForm() {
     console.log('Email:', this.email);
     console.log('Service:', this.service);
@@ -159,5 +187,8 @@ export class ContactPage implements OnInit {
     });
 
     console.log('Method:', this.method);
+
+    // email company
+    this.sendEmail();
   }
 }
