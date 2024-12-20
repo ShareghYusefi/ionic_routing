@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
+import {
+  NativeSettings,
+  AndroidSettings,
+  IOSSettings,
+} from 'capacitor-native-settings';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +25,31 @@ export class HomePage {
       queryParams: {
         email: email, // email, in Javascript
       },
+    });
+  }
+
+  async openSettings(setting: string) {
+    let androidOption: AndroidSettings = AndroidSettings.Wifi; // default value
+    let iosOption: IOSSettings = IOSSettings.WiFi; // default value
+    // check what setting to open
+    if (setting === 'wifi') {
+      androidOption = AndroidSettings.Wifi;
+      iosOption = IOSSettings.WiFi;
+    } else if (setting === 'keyboard') {
+      androidOption = AndroidSettings.Keyboard;
+      iosOption = IOSSettings.Keyboard;
+    } else if (setting === 'bluetooth') {
+      androidOption = AndroidSettings.Bluetooth;
+      iosOption = IOSSettings.Bluetooth;
+    } else if (setting === 'settings') {
+      androidOption = AndroidSettings.Settings;
+      iosOption = IOSSettings.App;
+    }
+
+    // use plugin to open settings
+    await NativeSettings.open({
+      optionAndroid: androidOption,
+      optionIOS: iosOption,
     });
   }
 

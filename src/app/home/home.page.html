@@ -27,6 +27,10 @@
   <ion-button [routerLink]="'/contact/' + 1" routerDirection="forward"
     >Contact</ion-button
   >
+  <ion-button (click)="openSettings('wifi')">Open Wifi</ion-button>
+  <ion-button (click)="openSettings('bluetooth')">Open Bluetooth</ion-button>
+  <ion-button (click)="openSettings('keyboard')">Open Keyboard</ion-button>
+  <ion-button (click)="openSettings('settings')">Open Settings</ion-button>
 
   <ion-fab slot="fixed" horizontal="end" vertical="bottom">
     <ion-fab-button>
