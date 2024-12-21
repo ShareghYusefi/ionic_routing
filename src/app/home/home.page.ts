@@ -6,6 +6,7 @@ import {
   AndroidSettings,
   IOSSettings,
 } from 'capacitor-native-settings';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 @Component({
   selector: 'app-home',
@@ -50,6 +51,41 @@ export class HomePage {
     await NativeSettings.open({
       optionAndroid: androidOption,
       optionIOS: iosOption,
+    });
+  }
+
+  // requesting permission
+  async requestPermission() {
+    // use local notification plugin to request permission
+    const { display } = await LocalNotifications.requestPermissions();
+    console.log('Permission: ', display);
+    if (display != 'granted') {
+      console.error('Permission denied');
+    }
+  }
+
+  // schedule a notification
+  async scheduleNotification() {
+    await LocalNotifications.schedule({
+      notifications: [
+        {
+          id: 1, // set id for canceling
+          title: 'Hello!',
+          body: 'This is a local notification',
+          schedule: {
+            at: new Date( // set the time
+              new Date().getTime() + // get current time
+                4000 // add 4 seconds
+            ),
+          },
+        },
+      ],
+    });
+  }
+
+  async cancelNotification() {
+    await LocalNotifications.cancel({
+      notifications: [{ id: 1 }], // cancel notification with id 1
     });
   }
 

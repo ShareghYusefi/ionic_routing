@@ -31,6 +31,11 @@
   <ion-button (click)="openSettings('bluetooth')">Open Bluetooth</ion-button>
   <ion-button (click)="openSettings('keyboard')">Open Keyboard</ion-button>
   <ion-button (click)="openSettings('settings')">Open Settings</ion-button>
+  <ion-button (click)="requestPermission()">Request Permission</ion-button>
+  <ion-button (click)="scheduleNotification()"
+    >Schedule Notification</ion-button
+  >
+  <ion-button (click)="cancelNotification()">Cancel Notification</ion-button>
 
   <ion-fab slot="fixed" horizontal="end" vertical="bottom">
     <ion-fab-button>
