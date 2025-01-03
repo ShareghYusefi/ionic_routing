@@ -7,6 +7,7 @@ import {
   IOSSettings,
 } from 'capacitor-native-settings';
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { Contacts } from '@capacitor-community/contacts';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,7 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 export class HomePage {
   appName = environment.appName;
   apiEndpoint = environment.apiEndpoint;
+  contacts: any[] = [];
 
   // We can use NavController to define methods for navigation
   constructor(private navCtrl: NavController) {}
@@ -93,4 +95,27 @@ export class HomePage {
   navigateToContact() {
     this.navCtrl.navigateForward('/contact'); // Add the email as a parameter
   }
+
+  retrieveListOfContacts = async () => {
+    // request permission to access contacts
+    const permissions = await Contacts.requestPermissions();
+    if (permissions.contacts !== 'granted') {
+      console.error('Permission denied');
+      return;
+    }
+
+    // retrieve contacts
+    const projection = {
+      // Specify which fields should be retrieved.
+      name: true,
+      phones: true,
+    };
+
+    const result = await Contacts.getContacts({
+      projection,
+    });
+    // assign contacts to a variable
+    this.contacts = result.contacts;
+    console.log('Contacts: ', this.contacts);
+  };
 }
