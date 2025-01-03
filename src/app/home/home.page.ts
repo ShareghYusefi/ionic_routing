@@ -10,6 +10,7 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 import { Contacts } from '@capacitor-community/contacts';
 import { SmsManager } from '@byteowls/capacitor-sms';
 import { showToast } from '../utils/toast.util';
+import { CallNumber } from 'capacitor-call-number';
 
 @Component({
   selector: 'app-home',
@@ -33,6 +34,13 @@ export class HomePage {
       queryParams: {
         email: email, // email, in Javascript
       },
+    });
+  }
+
+  async callContact(contact: any) {
+    await CallNumber.call({
+      number: contact.phones?.[0]?.number,
+      bypassAppChooser: true, // show the default call dialer screen
     });
   }
 
