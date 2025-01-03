@@ -55,7 +55,7 @@
           <ion-icon slot="icon-only" name="call"></ion-icon>
         </ion-item-option>
         <!-- SMS Button -->
-        <ion-item-option color="secondary">
+        <ion-item-option (click)="sendSms(contact)" color="secondary">
           <ion-icon slot="icon-only" name="chatbubble-ellipses"></ion-icon>
         </ion-item-option>
       </ion-item-options>

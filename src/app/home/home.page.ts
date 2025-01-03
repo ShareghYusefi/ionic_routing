@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
 import {
   NativeSettings,
@@ -8,6 +8,8 @@ import {
 } from 'capacitor-native-settings';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { Contacts } from '@capacitor-community/contacts';
+import { SmsManager } from '@byteowls/capacitor-sms';
+import { showToast } from '../utils/toast.util';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +22,10 @@ export class HomePage {
   contacts: any[] = [];
 
   // We can use NavController to define methods for navigation
-  constructor(private navCtrl: NavController) {}
+  constructor(
+    private navCtrl: NavController,
+    private toastController: ToastController
+  ) {}
 
   // navigate to about page
   navigateToAbout(email: string) {
@@ -29,6 +34,22 @@ export class HomePage {
         email: email, // email, in Javascript
       },
     });
+  }
+
+  sendSms(contact: any) {
+    const numbers: string[] = [contact.phones?.[0]?.number];
+    SmsManager.send({
+      numbers: numbers,
+      text: 'This is a example SMS',
+    })
+      .then(() => {
+        // success
+        showToast(this.toastController, 'bottom', 'SMS sent', 'success');
+        console.log('SMS sent');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   async openSettings(setting: string) {
