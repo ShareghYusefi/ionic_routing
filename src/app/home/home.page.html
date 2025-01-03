@@ -38,6 +38,7 @@
   <ion-button (click)="cancelNotification()">Cancel Notification</ion-button>
 
   <ion-button (click)="retrieveListOfContacts()">Fetch Contacts</ion-button>
+  <ion-button (click)="createContact()">Create Contact</ion-button>
 
   <ion-list>
     <ion-item-sliding *ngFor="let contact of contacts">
@@ -51,7 +52,7 @@
       <!-- Swipe Options -->
       <ion-item-options side="end">
         <!-- Call Button -->
-        <ion-item-option  (click)="callContact(contact)" color="success">
+        <ion-item-option (click)="callContact(contact)" color="success">
           <ion-icon slot="icon-only" name="call"></ion-icon>
         </ion-item-option>
         <!-- SMS Button -->

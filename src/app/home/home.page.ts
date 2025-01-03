@@ -7,10 +7,10 @@ import {
   IOSSettings,
 } from 'capacitor-native-settings';
 import { LocalNotifications } from '@capacitor/local-notifications';
-import { Contacts } from '@capacitor-community/contacts';
 import { SmsManager } from '@byteowls/capacitor-sms';
 import { showToast } from '../utils/toast.util';
 import { CallNumber } from 'capacitor-call-number';
+import { Contacts, PhoneType, EmailType } from '@capacitor-community/contacts';
 
 @Component({
   selector: 'app-home',
@@ -147,4 +147,42 @@ export class HomePage {
     this.contacts = result.contacts;
     console.log('Contacts: ', this.contacts);
   };
+
+  async createContact() {
+    const res = await Contacts.createContact({
+      contact: {
+        name: {
+          given: 'Jane',
+          family: 'Doe',
+        },
+        birthday: {
+          year: 1990,
+          month: 1,
+          day: 1,
+        },
+        phones: [
+          {
+            type: PhoneType.Mobile,
+            label: 'mobile',
+            number: '+1-212-456-7890',
+          },
+          {
+            type: PhoneType.Work,
+            label: 'work',
+            number: '212-456-7890',
+          },
+        ],
+        emails: [
+          {
+            type: EmailType.Work,
+            label: 'work',
+            address: 'jane@example.com',
+          },
+        ],
+        urls: ['jane.com'],
+      },
+    });
+
+    console.log(res.contactId);
+  }
 }
