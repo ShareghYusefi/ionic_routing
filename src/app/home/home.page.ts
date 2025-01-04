@@ -11,6 +11,8 @@ import { SmsManager } from '@byteowls/capacitor-sms';
 import { showToast } from '../utils/toast.util';
 import { CallNumber } from 'capacitor-call-number';
 import { Contacts, PhoneType, EmailType } from '@capacitor-community/contacts';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
 
 @Component({
   selector: 'app-home',
@@ -184,5 +186,62 @@ export class HomePage {
     });
 
     console.log(res.contactId);
+  }
+
+  // read file form assets folder
+  async copyFileToShareLocation(filename: string) {
+    try {
+      //1. fetch file from asserts directory
+      const response = await fetch(`assets/${filename}`);
+      // get file blob (binary large object): a collection of binary data stored as a single entity
+      // binary data is 1s and 0s
+      const blob = await response.blob();
+
+      //2.transform blob to base64Data format: base64 can be used by web browsers or mobile devices to display images
+      const reader = new FileReader();
+      // create a promise to read the file as base64
+      const base64Promise = new Promise<string>((resolve, reject) => {
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob); // read the blob as base64
+      });
+      // wait for the promise to resolve
+      const base64Data = await base64Promise;
+
+      //3. create a file in the cache directory
+      const result = await Filesystem.writeFile({
+        path: filename,
+        data: base64Data.split(',')[1], // remove the "data:image/png;base64,"" part
+        directory: Directory.Cache,
+      });
+
+      // return uri of the file
+      return result.uri;
+    } catch (error) {
+      console.log('Error copying file: ', error);
+      return null;
+    }
+  }
+
+  // Shareing via meta platform
+  async metaSharing() {
+    // get out file to share from the assets folder using filesytem plugin
+    const fileUri = await this.copyFileToShareLocation(
+      'capacitor-logo-light.png'
+    );
+    // use the share plugin to share the file on other apps
+    if (fileUri) {
+      try {
+        // share the file
+        await Share.share({
+          title: 'Capacitor Sharing',
+          text: 'Sharing a file using Capacitor',
+          url: fileUri,
+          dialogTitle: 'Share via',
+        });
+      } catch (error) {
+        console.error('Error sharing file: ', error);
+      }
+    }
   }
 }
