@@ -13,6 +13,7 @@ import { CallNumber } from 'capacitor-call-number';
 import { Contacts, PhoneType, EmailType } from '@capacitor-community/contacts';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
   selector: 'app-home',
@@ -244,4 +245,53 @@ export class HomePage {
       }
     }
   }
+
+  imageUrl: string | undefined;
+
+  takePhotoAndSaveToGallery = async () => {
+    try {
+      const image = await Camera.getPhoto({
+        source: CameraSource.Camera,
+        quality: 90,
+        allowEditing: true, // allow cropping
+        resultType: CameraResultType.Uri,
+        saveToGallery: true, // save to gallery
+      });
+
+      if (image.path) {
+        this.imageUrl = image.webPath;
+        return image.path;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.log('Error taking photo: ', error);
+      return null;
+    }
+  };
+
+  selectAndCropPhoto = async () => {
+    try {
+      const image = await Camera.getPhoto({
+        source: CameraSource.Photos,
+        quality: 90,
+        allowEditing: true, // allow cropping
+        resultType: CameraResultType.Base64, // return photo as base64
+      });
+
+      const filename = `cropped_${new Date().getTime()}.png`;
+      // write it to cache directory of filesystem
+      const result = await Filesystem.writeFile({
+        path: filename,
+        data: image.base64String ?? '',
+        directory: Directory.Cache,
+      });
+
+      this.imageUrl = image.webPath;
+      return result.uri;
+    } catch (error) {
+      console.log('Error taking photo: ', error);
+      return null;
+    }
+  };
 }

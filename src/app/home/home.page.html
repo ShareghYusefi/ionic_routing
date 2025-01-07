@@ -40,6 +40,10 @@
   <ion-button (click)="retrieveListOfContacts()">Fetch Contacts</ion-button>
   <ion-button (click)="createContact()">Create Contact</ion-button>
   <ion-button (click)="metaSharing()">Share Image on Meta</ion-button>
+  <ion-button (click)="takePhotoAndSaveToGallery()">Take Photo</ion-button>
+  <ion-button (click)="selectAndCropPhoto()">Select a Photo</ion-button>
+  <!-- image -->
+  <img [src]="imageUrl" *ngIf="imageUrl" />
 
   <ion-list>
     <ion-item-sliding *ngFor="let contact of contacts">
